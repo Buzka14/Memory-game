@@ -50,14 +50,15 @@ document.addEventListener('DOMContentLoaded', () => {
             img: 'images/rmadrid.png'
         }
     ]
-
+    
+    cardArray.sort(() => 0.5 - Math.random()) 
+    
     const grid = document.querySelector('.grid')
     const resultDisplay = document.querySelector('#result')
     var cardsChosen = [];
     var cardsChosenId = [];
     var cardsWon = [];
-
-
+    
     function createBoard(){
         for (let i = 0; i < cardArray.length; i++){
             var card = document.createElement('img')
@@ -65,59 +66,42 @@ document.addEventListener('DOMContentLoaded', () => {
             card.setAttribute('data-id', i)
             card.addEventListener('click', flipCard)
             grid.appendChild(card)
-
         }
     }
-
-    function checkForMatch(){
-        var cards = document.querySelector('img')
-        const optionOneId = cardsChosenId[0]
-        const optionTwoId = cardsChosenId[1]
-        if (cardsChosenId[0] === cardsChosenId[1]){
-            alert ('You found a match!')
-            cards [optionOneId].setAttribute('scr','images/white.png')
-            cards [optionTwoId].setAttribute('scr', 'images/white.png')
-            cardsWon.push.cardsChosen
-        } else {
-            cards[optionOneId].setAttribute('scr', 'images/blank.png')
-            cards[optionTwoId].setAttribute('scr', 'images/blank.png')
-            alert ('Try again!')
-        }
-
-        cardsChosen = []
-        cardsChosenId = []
-        resultDisplay.textContent = cardsWon.length 
-        if (cardsWon.length === cardsArray.length/2){
-            resultDisplay.textContent = "Congratulations! You Win!"
-        }
-
-    }
-
-    function flipCard(){
+    
+    function flipCard() {
         var cardId = this.getAttribute('data-id')
         cardsChosen.push(cardArray[cardId].name)
-        cardsChosenId.push(cardId)
-        this.setAttribute('scr', cardArray[cardId].img)
-        if (cardsChoosen === 2){
+        cardsChosenId.push(cardId) 
+        this.setAttribute('src', cardArray[cardId].img)
+        if (cardsChosen.length === 2){
             setTimeout(checkForMatch, 500)
         }
     }
     
+    function checkForMatch(){
+        var cards = document.querySelectorAll('img')
+        const optionOneId = cardsChosenId[0]
+        const optionTwoId = cardsChosenId[1]
+        if (cardsChosen[0] === cardsChosen[1]) {
+            alert ('You found a match!')
+            cards[optionOneId].setAttribute('src', 'images/white.png')
+            cards[optionTwoId].setAttribute('src', 'images/white.png')
+            cardsWon.push(cardsChosen)
+        } else {
+            cards[optionOneId].setAttribute('src', 'images/blank.png')
+            cards[optionTwoId].setAttribute('src', 'images/blank.png')
+            alert ('Try again!')
+        }
+        
+        cardsChosen = []
+        cardsChosenId = []
+        
+        resultDisplay.textContent = cardsWon.length 
+        if (cardsWon.length === cardArray.length/2) {
+            resultDisplay.textContent = "Congratulations! You Won!"
+        }
+    }
+
     createBoard()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-})
+});
